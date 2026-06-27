@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BetLife365 · Member zone</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzJmN2QzNCIgc3Ryb2tlPSIjZmY3YTFhIiBzdHJva2Utd2lkdGg9IjciLz48cGF0aCBkPSJNMjcgNjAgTDIyIDM3IEwzNiA0NyBMNTAgMjggTDY0IDQ3IEw3OCAzNyBMNzMgNjAgWiIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjI0IiByPSIzLjQiIGZpbGw9IiNmZmZmZmYiLz48dGV4dCB4PSI1MCIgeT0iODIiIGZvbnQtZmFtaWx5PSJBcmlhbCxIZWx2ZXRpY2Esc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIyMSIgZmlsbD0iI2ZmN2ExYSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+MzY1PC90ZXh0Pjwvc3ZnPg==">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  :root{
+    --bg:#060505;--surface:#141110;--surface-2:#100d0c;
+    --hair:rgba(255,255,255,.08);--hair-2:rgba(255,255,255,.14);
+    --ink:#f6f4f1;--ink-dim:#bcb4ab;--ink-faint:#8b8178;
+    --accent:#ff7a1a;--accent-2:#ffa23d;--on-accent:#1c0d00;
+    --core:#46cd97;--opp:#ff6a4d;--discord:#5865F2;
+    --font:"SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;position:relative;overflow-x:hidden;}
+  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+      radial-gradient(800px 540px at 80% -10%,rgba(255,122,26,.12),transparent 60%),
+      radial-gradient(700px 520px at 10% 110%,rgba(255,122,26,.07),transparent 60%),var(--bg);}
+  a{color:inherit;text-decoration:none;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.02em;margin-bottom:22px;}
+  .brand .mark{width:30px;height:30px;border-radius:50%;object-fit:cover;display:block;}
+  .brand .mark svg{width:16px;height:16px;}
+  .card{width:400px;max-width:100%;background:linear-gradient(180deg,#15120f,#100d0c);border:1px solid var(--hair);border-radius:20px;padding:30px 28px;box-shadow:0 40px 120px -24px rgba(0,0,0,.8);}
+  h1{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px;}
+  .sub{font-size:13.5px;color:var(--ink-faint);line-height:1.5;margin-bottom:20px;}
+  .gwrap{display:flex;justify-content:center;min-height:44px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;font-family:inherit;font-size:15px;font-weight:700;padding:13px 18px;border-radius:980px;border:1px solid transparent;cursor:pointer;transition:transform .15s,box-shadow .2s,background .2s;}
+  .btn:hover{transform:translateY(-1px);}
+  .btn-accent{background:linear-gradient(180deg,var(--accent-2),var(--accent));color:var(--on-accent);box-shadow:0 12px 38px -10px rgba(255,122,26,.55);}
+  .btn-discord{background:var(--discord);color:#fff;box-shadow:0 12px 38px -10px rgba(88,101,242,.5);}
+  .btn-discord svg{width:17px;height:17px;}
+  .btn-line{background:rgba(255,255,255,.05);color:var(--ink);border-color:var(--hair-2);}
+  .btn-line:hover{border-color:rgba(255,255,255,.35);}
+  .row{margin-top:12px;}
+  .note{font-size:12.5px;color:var(--ink-faint);margin-top:16px;text-align:center;line-height:1.5;}
+  .cfg{display:none;margin-top:16px;font-size:12px;color:#ffb27a;background:rgba(255,122,26,.08);border:1px solid rgba(255,122,26,.25);border-radius:12px;padding:11px 13px;line-height:1.5;}
+  .tabs{display:flex;gap:6px;background:#0c0b0a;border:1px solid var(--hair);border-radius:12px;padding:4px;margin-bottom:18px;}
+  .tab{flex:1;text-align:center;font-size:13px;font-weight:700;padding:9px;border-radius:9px;color:var(--ink-faint);cursor:pointer;transition:.2s;}
+  .tab.active{background:var(--accent);color:var(--on-accent);}
+  .divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--ink-faint);font-size:11px;letter-spacing:.08em;text-transform:uppercase;}
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--hair);}
+  label{display:block;font-size:11.5px;color:var(--ink-faint);margin:12px 0 6px;font-weight:600;}
+  input[type=text],input[type=email],input[type=password],input[type=date],input[type=tel],select{width:100%;background:#0c0b0a;border:1px solid var(--hair-2);border-radius:10px;color:var(--ink);font-size:14px;padding:11px 12px;outline:none;font-family:inherit;}
+  input:focus,select:focus{border-color:var(--accent);}
+  .two{display:flex;gap:10px;}
+  .two>div{flex:1;}
+  .check{display:flex;align-items:flex-start;gap:9px;margin-top:14px;font-size:12px;color:var(--ink-dim);line-height:1.45;}
+  .check input{margin-top:1px;flex:0 0 auto;width:16px;height:16px;accent-color:var(--accent);}
+  .check a{color:var(--accent);font-weight:600;}
+  .formerr{color:var(--opp);font-size:12.5px;margin-top:12px;display:none;}
+  .ok{color:var(--core);font-size:13px;margin-top:12px;display:none;text-align:center;line-height:1.5;}
+  .legal{font-size:10.5px;color:var(--ink-faint);margin-top:14px;line-height:1.5;}
+  #signupForm,#loginForm{display:none;}
+  #signupForm.show,#loginForm.show{display:block;}
+  #memberView{display:none;}
+  .me{display:flex;align-items:center;gap:13px;margin-bottom:22px;}
+  .me img{width:46px;height:46px;border-radius:50%;border:1px solid var(--hair-2);}
+  .me .mn{font-weight:700;font-size:16px;}
+  .me .men{font-size:13px;color:var(--ink-faint);}
+  .status{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--core);background:rgba(70,205,151,.1);border:1px solid rgba(70,205,151,.3);border-radius:10px;padding:9px 12px;margin-bottom:18px;}
+  .status .ld{width:7px;height:7px;border-radius:50%;background:var(--core);}
+  .seclbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin:20px 0 10px;}
+  .logout{display:block;text-align:center;margin-top:20px;font-size:13px;color:var(--ink-faint);cursor:pointer;}
+  .logout:hover{color:var(--ink);}
+  .adminband{display:none;background:rgba(255,122,26,.1);border:1px solid rgba(255,122,26,.3);border-radius:12px;padding:14px;margin-bottom:18px;font-size:13px;color:#ffd9b8;text-align:center;}
+</style>
+</head>
+<body>
+  <div class="brand"><img class="mark" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzJmN2QzNCIgc3Ryb2tlPSIjZmY3YTFhIiBzdHJva2Utd2lkdGg9IjciLz48cGF0aCBkPSJNMjcgNjAgTDIyIDM3IEwzNiA0NyBMNTAgMjggTDY0IDQ3IEw3OCAzNyBMNzMgNjAgWiIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjI0IiByPSIzLjQiIGZpbGw9IiNmZmZmZmYiLz48dGV4dCB4PSI1MCIgeT0iODIiIGZvbnQtZmFtaWx5PSJBcmlhbCxIZWx2ZXRpY2Esc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIyMSIgZmlsbD0iI2ZmN2ExYSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+MzY1PC90ZXh0Pjwvc3ZnPg==" alt="BetLife365" width="30" height="30"> BetLife365</div>
+  <div class="card">
+    <div id="loginView">
+      <h1>Member zone</h1>
+      <p class="sub">Create your account or sign in to manage your VIP subscription.</p>
+      <div class="tabs"><div class="tab active" data-tab="signup">Create account</div><div class="tab" data-tab="login">Log in</div></div>
+      <div class="gwrap"><div id="gbtn"></div></div>
+      <div class="divider">or with email</div>
+      <form id="signupForm" class="show" autocomplete="on" novalidate>
+        <div class="two"><div><label>First name</label><input type="text" id="suFirst" autocomplete="given-name" required></div><div><label>Last name</label><input type="text" id="suLast" autocomplete="family-name" required></div></div>
+        <label>Email</label><input type="email" id="suEmail" autocomplete="email" required>
+        <div class="two"><div><label>Password</label><input type="password" id="suPass" autocomplete="new-password" required></div><div><label>Confirm</label><input type="password" id="suPass2" autocomplete="new-password" required></div></div>
+        <div class="two"><div><label>Date of birth <span id="dobHint" style="color:var(--ink-faint);font-weight:400"></span></label><input type="date" id="suDob" required></div><div><label>Country</label><select id="suCountry"></select></div></div>
+        <label>Phone (optional)</label><input type="tel" id="suPhone" autocomplete="tel">
+        <div class="check"><input type="checkbox" id="suAge"><span>I am 18 years or older.</span></div>
+        <div class="check"><input type="checkbox" id="suTerms"><span>I agree to the <a href="terms.html" target="_blank">Terms</a> and the <a href="privacy.html" target="_blank">Privacy Policy</a>, and consent to the processing of my data to provide this service.</span></div>
+        <div class="check"><input type="checkbox" id="suMkt"><span>Send me the free daily pick and updates by email (optional).</span></div>
+        <div class="formerr" id="suErr"></div>
+        <div class="ok" id="suOk"></div>
+        <button type="submit" class="btn btn-accent" style="margin-top:18px">Create account</button>
+        <p class="legal">We only collect what we need to run your account and comply with Dutch and EU law (AVG/GDPR). You can request access to or deletion of your data at any time.</p>
+      </form>
+      <form id="loginForm" autocomplete="on" novalidate>
+        <label>Email</label><input type="email" id="liEmail" autocomplete="email" required>
+        <label>Password</label><input type="password" id="liPass" autocomplete="current-password" required>
+        <div class="formerr" id="liErr"></div>
+        <button type="submit" class="btn btn-accent" style="margin-top:18px">Log in</button>
+        <p class="note"><a href="#" id="forgot" style="color:var(--ink-faint)">Forgot your password?</a></p>
+      </form>
+      <div id="cfgNote" class="cfg"></div>
+      <p class="note">Prefer free first? <a href="https://discord.gg/sVxE2yqvBu" style="color:var(--accent);font-weight:700">Start free on Discord</a></p>
+    </div>
+    <div id="memberView">
+      <div id="adminBand" class="adminband"></div>
+      <div class="me"><img id="mePic" alt="" src="" onerror="this.style.display='none'"><div><div class="mn" id="meName">Member</div><div class="men" id="meEmail"></div></div></div>
+      <div class="status"><span class="ld"></span> <span id="planLine">VIP membership active</span></div>
+      <div class="seclbl">Your subscription</div>
+      <button class="btn btn-accent" id="manageBtn">Manage subscription</button>
+      <div class="row"><a class="btn btn-discord" href="https://discord.gg/sVxE2yqvBu"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg> Open VIP Discord</a></div>
+      <div id="adminDash" class="row" style="display:none"><a class="btn btn-line" id="dashBtn" href="#">Open my dashboard</a></div>
+      <div class="logout" id="logoutBtn">Log out</div>
+    </div>
+  </div>
+<script>
+  var GOOGLE_CLIENT_ID = "GOOGLE_CLIENT_ID";
+  var ADMIN_EMAIL      = "wfsirvania@gmail.com";
+  var DASHBOARD_URL    = "https://fredbull070.github.io/vip-dashboard/";
+  var STRIPE_PORTAL_URL= "STRIPE_PORTAL_URL";
+  var AUTH_ENDPOINT    = "AUTH_ENDPOINT_URL";
+  var DISCORD_URL      = "https://discord.gg/sVxE2yqvBu";
+  function ready(v){return v && v.indexOf('_URL')<0 && v.indexOf('GOOGLE_CLIENT_ID')<0;}
+  function parseJwt(t){try{var b=t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');var j=decodeURIComponent(atob(b).split('').map(function(c){return '%'+('00'+c.charCodeAt(0).toString(16)).slice(-2);}).join(''));return JSON.parse(j);}catch(e){return null;}}
+  function showMember(u){
+    document.getElementById('loginView').style.display='none';
+    document.getElementById('memberView').style.display='block';
+    document.getElementById('meName').textContent=u.name||((u.firstName||'')+' '+(u.lastName||'')).trim()||'Member';
+    document.getElementById('meEmail').textContent=u.email||'';
+    var pic=document.getElementById('mePic'); if(u.picture){pic.src=u.picture;pic.style.display='block';} else {pic.style.display='none';}
+    if((u.email||'').toLowerCase()===ADMIN_EMAIL.toLowerCase()){
+      document.getElementById('planLine').textContent='Admin account';
+      var ab=document.getElementById('adminBand'); ab.style.display='block'; ab.textContent='You are signed in as admin. Redirecting you to the dashboard...';
+      var ad=document.getElementById('adminDash'); ad.style.display='block'; document.getElementById('dashBtn').href=DASHBOARD_URL;
+    }
+  }
+  function signIn(u){
+    try{sessionStorage.setItem('bl_member',JSON.stringify(u));}catch(e){}
+    if((u.email||'').toLowerCase()===ADMIN_EMAIL.toLowerCase()){ showMember(u); setTimeout(function(){window.location.href=DASHBOARD_URL;},900); return; }
+    showMember(u);
+  }
+  function onCred(resp){ var p=parseJwt(resp.credential); if(!p||!p.email) return; signIn({email:p.email,name:p.name,picture:p.picture}); }
+  function age(dob){ if(!dob) return 0; var d=new Date(dob), n=new Date(); var a=n.getFullYear()-d.getFullYear(); var m=n.getMonth()-d.getMonth(); if(m<0||(m===0&&n.getDate()<d.getDate()))a--; return a; }
+  window.addEventListener('load', function(){
+    // ---- country list (all countries) + locale-based date format ----
+    var CODES=["AD","AE","AF","AG","AL","AM","AO","AR","AT","AU","AZ","BA","BB","BD","BE","BF","BG","BH","BI","BJ","BN","BO","BR","BS","BT","BW","BY","BZ","CA","CD","CF","CG","CH","CI","CL","CM","CN","CO","CR","CU","CV","CY","CZ","DE","DJ","DK","DM","DO","DZ","EC","EE","EG","ER","ES","ET","FI","FJ","FM","FR","GA","GB","GD","GE","GH","GM","GN","GQ","GR","GT","GW","GY","HN","HR","HT","HU","ID","IE","IL","IN","IQ","IR","IS","IT","JM","JO","JP","KE","KG","KH","KI","KM","KN","KP","KR","KW","KZ","LA","LB","LC","LI","LK","LR","LS","LT","LU","LV","LY","MA","MC","MD","ME","MG","MH","MK","ML","MM","MN","MR","MT","MU","MV","MW","MX","MY","MZ","NA","NE","NG","NI","NL","NO","NP","NR","NZ","OM","PA","PE","PG","PH","PK","PL","PT","PW","PY","QA","RO","RS","RU","RW","SA","SB","SC","SD","SE","SG","SI","SK","SL","SM","SN","SO","SR","SS","ST","SV","SY","SZ","TD","TG","TH","TJ","TL","TM","TN","TO","TR","TT","TV","TZ","UA","UG","US","UY","UZ","VA","VC","VE","VN","VU","WS","YE","ZA","ZM","ZW"];
+    var LOC=(navigator.language||'en-US');
+    function region(){ try{ var m=LOC.match(/[-_]([A-Za-z]{2})$/); if(m) return m[1].toUpperCase(); }catch(e){} return 'NL'; }
+    (function(){
+      var sel=document.getElementById('suCountry'); if(!sel) return;
+      var dn=null; try{ dn=new Intl.DisplayNames([LOC],{type:'region'}); }catch(e){}
+      var reg=region();
+      var list=CODES.map(function(c){ var n=c; try{ if(dn){ n=dn.of(c)||c; } }catch(e){} return {c:c,n:n}; });
+      list.sort(function(a,b){ return a.n.localeCompare(b.n); });
+      sel.innerHTML=list.map(function(o){ return '<option value="'+o.c+'"'+(o.c===reg?' selected':'')+'>'+o.n+'</option>'; }).join('');
+    })();
+    (function(){
+      var dob=document.getElementById('suDob'); if(!dob) return;
+      try{ dob.setAttribute('lang', LOC); }catch(e){}
+      try{
+        var parts=new Intl.DateTimeFormat(LOC).formatToParts(new Date(2000,11,31));
+        var sep='/'; for(var i=0;i<parts.length;i++){ if(parts[i].type==='literal'){ sep=parts[i].value; break; } }
+        var ord=parts.filter(function(p){return p.type==='day'||p.type==='month'||p.type==='year';}).map(function(p){ return p.type==='day'?'dd':(p.type==='month'?'mm':'yyyy'); }).join(sep);
+        var hint=document.getElementById('dobHint'); if(hint) hint.textContent='('+ord+')';
+      }catch(e){}
+    })();
+    var tabs=document.querySelectorAll('.tab');
+    tabs.forEach(function(t){ t.addEventListener('click', function(){
+      tabs.forEach(function(x){x.classList.remove('active');}); t.classList.add('active');
+      var which=t.getAttribute('data-tab');
+      document.getElementById('signupForm').classList.toggle('show', which==='signup');
+      document.getElementById('loginForm').classList.toggle('show', which==='login');
+    });});
+    document.getElementById('signupForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      var err=document.getElementById('suErr'), ok=document.getElementById('suOk'); err.style.display='none'; ok.style.display='none';
+      var data={firstName:document.getElementById('suFirst').value.trim(),lastName:document.getElementById('suLast').value.trim(),email:document.getElementById('suEmail').value.trim(),dob:document.getElementById('suDob').value,country:document.getElementById('suCountry').value,phone:document.getElementById('suPhone').value.trim(),marketingOptIn:document.getElementById('suMkt').checked};
+      var p1=document.getElementById('suPass').value, p2=document.getElementById('suPass2').value;
+      function fail(m){err.textContent=m;err.style.display='block';}
+      if(!data.firstName||!data.lastName) return fail('Please enter your first and last name.');
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) return fail('Please enter a valid email address.');
+      if(p1.length<8) return fail('Password must be at least 8 characters.');
+      if(p1!==p2) return fail('Passwords do not match.');
+      if(!data.dob||age(data.dob)<18) return fail('You must be 18 or older to register.');
+      if(!document.getElementById('suAge').checked) return fail('Please confirm you are 18 or older.');
+      if(!document.getElementById('suTerms').checked) return fail('Please accept the Terms and Privacy Policy.');
+      data.password=p1;
+      if(ready(AUTH_ENDPOINT)){
+        fetch(AUTH_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({action:'signup'},data))})
+          .then(function(r){return r.json();}).then(function(res){ if(res&&res.ok){ signIn({email:data.email,firstName:data.firstName,lastName:data.lastName}); } else fail((res&&res.error)||'Could not create the account. Please try again.'); })
+          .catch(function(){ fail('Network error. Please try again.'); });
+      } else {
+        try{ delete data.password; localStorage.setItem('bl_pending_signup', JSON.stringify(data)); }catch(e){}
+        ok.textContent='Thanks '+(data.firstName||'')+'! Account creation goes live once billing is connected. Meanwhile, join the free Discord and we will set you up.';
+        ok.style.display='block';
+      }
+    });
+    document.getElementById('loginForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      var err=document.getElementById('liErr'); err.style.display='none';
+      var email=document.getElementById('liEmail').value.trim(), pass=document.getElementById('liPass').value;
+      if(!email||!pass){ err.textContent='Enter your email and password.'; err.style.display='block'; return; }
+      if(ready(AUTH_ENDPOINT)){
+        fetch(AUTH_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'login',email:email,password:pass})})
+          .then(function(r){return r.json();}).then(function(res){ if(res&&res.ok&&res.user){ signIn(res.user); } else { err.textContent=(res&&res.error)||'Wrong email or password.'; err.style.display='block'; } })
+          .catch(function(){ err.textContent='Network error. Please try again.'; err.style.display='block'; });
+      } else { err.textContent='Email login activates once the backend is connected.'; err.style.display='block'; }
+    });
+    document.getElementById('forgot').addEventListener('click', function(e){ e.preventDefault(); alert('Password reset opens once the backend is connected. For now, reach us in Discord.'); });
+    document.getElementById('manageBtn').addEventListener('click', function(){ if(ready(STRIPE_PORTAL_URL)){ window.location.href=STRIPE_PORTAL_URL; } else { alert('Subscription management opens here as soon as billing is connected.'); window.location.href=DISCORD_URL; } });
+    document.getElementById('logoutBtn').addEventListener('click', function(){ try{sessionStorage.removeItem('bl_member');}catch(e){} if(window.google&&google.accounts&&google.accounts.id){google.accounts.id.disableAutoSelect();} document.getElementById('memberView').style.display='none'; document.getElementById('loginView').style.display='block'; });
+    var saved=null; try{saved=JSON.parse(sessionStorage.getItem('bl_member')||'null');}catch(e){}
+    if(saved){ showMember(saved); return; }
+    function initG(){
+      if(!(window.google&&google.accounts&&google.accounts.id)) return false;
+      if(!ready(GOOGLE_CLIENT_ID)){ var n=document.getElementById('cfgNote'); n.style.display='block'; n.textContent='Google login and email accounts activate once your Google Client ID and backend are connected.'; return true; }
+      google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID, callback:onCred, auto_select:false});
+      google.accounts.id.renderButton(document.getElementById('gbtn'), {theme:'filled_black', size:'large', shape:'pill', text:'continue_with', width:320});
+      return true;
+    }
+    if(!initG()){ var tries=0; var iv=setInterval(function(){ if(initG()||++tries>40) clearInterval(iv); }, 100); }
+  });
+</script>
+</body>
+</html>

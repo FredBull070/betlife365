@@ -1,0 +1,12 @@
+[
+ {"s":"football","m":"Panama x England","k":"England","o":1.25},
+ {"s":"tennis","m":"Madison Keys x Tatjana Maria","k":"Keys","o":1.30},
+ {"s":"football","m":"Croatia x Ghana","k":"Croatia","o":1.70},
+ {"s":"tennis","m":"Naomi Osaka x Karolina Muchova","k":"Osaka","o":1.65},
+ {"s":"football","m":"Colombia x Portugal","k":"Portugal","o":2.05},
+ {"s":"tennis","m":"Davidovich Fokina x Ethan Quinn","k":"Davidovich F.","o":1.57},
+ {"s":"football","m":"Algeria x Austria","k":"Austria","o":2.15},
+ {"s":"tennis","m":"Ugo Humbert x Zizou Bergs","k":"Humbert -2.5","o":1.95},
+ {"s":"football","m":"DR Congo x Uzbekistan","k":"DR Congo","o":2.30},
+ {"s":"football","m":"Jordan x Argentina","k":"Argentina","o":1.35}
+]
