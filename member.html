@@ -137,6 +137,7 @@
   var ADMIN_EMAIL="wfsirvania@gmail.com";
   var DASHBOARD_URL="https://fredbull070.github.io/vip-dashboard/";
   var STRIPE_PORTAL_URL="STRIPE_PORTAL_URL";
+  var STRIPE_PAYMENT_LINK="STRIPE_PAYMENT_LINK";
   var DISCORD_URL="https://discord.gg/sVxE2yqvBu";
   function ready(v){return v && v.indexOf("_URL")<0 && v.indexOf("GOOGLE_CLIENT_ID")<0;}
 
@@ -204,8 +205,8 @@
       pl.textContent="Free";pl.className="b-free";su.textContent="Free plan";su.className="b-free";rr.style.display="none";
       act.innerHTML='<button class="btn btn-accent" id="subUp">Upgrade to VIP, $80/mo</button>';
       document.getElementById("subUp").onclick=function(){
-        if(ready(STRIPE_PORTAL_URL)){location.href=STRIPE_PORTAL_URL;return;}
-        u.plan="vip";u.subStatus="active";u.renew=addMonth(new Date());putUser(u);renderSub();subMsg("Welcome to VIP! (Demo upgrade. Real payment connects to Stripe.)");
+        if(ready(STRIPE_PAYMENT_LINK)){var sp=STRIPE_PAYMENT_LINK.indexOf("?")>-1?"&":"?";location.href=STRIPE_PAYMENT_LINK+sp+"prefilled_email="+encodeURIComponent(u.email||"")+"&client_reference_id="+encodeURIComponent(u.email||"");return;}
+        u.plan="vip";u.subStatus="active";u.renew=addMonth(new Date());putUser(u);renderSub();subMsg("Welcome to VIP! (Demo upgrade, real payment goes live once Stripe billing is active.)");
       };
     }
   }
@@ -281,6 +282,7 @@
     // restore session
     var sess=null;try{sess=sessionStorage.getItem("bl_session");}catch(e){}
     if(sess){var u=getUser(sess);if(u){showMember(u);} }
+    if(/[?&]paid=1/.test(location.search) && CUR){ CUR.plan="vip";CUR.subStatus="active";CUR.renew=addMonth(new Date());putUser(CUR);renderSub();selMtab("sub");subMsg("Payment received, welcome to VIP! Manage your subscription here anytime."); try{history.replaceState(null,"",location.pathname);}catch(e){} }
 
     // Google
     function onCred(resp){var p=null;try{var b=resp.credential.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");p=JSON.parse(decodeURIComponent(atob(b).split("").map(function(c){return "%"+("00"+c.charCodeAt(0).toString(16)).slice(-2);}).join("")));}catch(e){}if(!p||!p.email)return;
