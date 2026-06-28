@@ -339,7 +339,7 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
  var track=document.getElementById('tapeTrack');if(!track)return;
  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
  function item(f){return '<span class="ti" data-base="'+f.o.toFixed(2)+'"><span class="te">'+emo(f)+'</span><span class="tm">'+esc(f.m)+'</span><span class="tk">'+esc(f.k)+'</span><span class="to">'+f.o.toFixed(2)+'</span><span class="tar">&#9650;</span></span>';}
- function interleave(list){var g={},order=[];list.forEach(function(x){var k=(x.s||'').toLowerCase();if(!g[k]){g[k]=[];order.push(k);}g[k].push(x);});var out=[],added=true;while(added){added=false;for(var i=0;i<order.length;i++){var a=g[order[i]];if(a.length){out.push(a.shift());added=true;}}}return out;}
+ function interleave(list){var g={},order=[],MAXPER=3;list.forEach(function(x){var k=(x.s||'').toLowerCase();if(!g[k]){g[k]=[];order.push(k);}if(g[k].length<MAXPER)g[k].push(x);});var out=[],added=true;while(added){added=false;for(var i=0;i<order.length;i++){var a=g[order[i]];if(a.length){out.push(a.shift());added=true;}}}return out;}
  function render(list){if(!list||!list.length)list=DEFAULT;list=interleave(list);var one=list.map(item).join('');track.innerHTML=one+one;}
  render(DEFAULT);
  try{fetch('https://raw.githubusercontent.com/FredBull070/vip-dashboard/main/ticker.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(d){if(d&&d.length){var mapped=d.map(function(x){return {s:x.s,e:x.e,m:x.m,k:x.k,o:parseFloat(x.o)};});var have={};mapped.forEach(function(x){have[(x.s||'').toLowerCase()]=1;});DEFAULT.forEach(function(g){if(!have[(g.s||'').toLowerCase()])mapped.push(g);});render(mapped);}}).catch(function(){});}catch(e){}
