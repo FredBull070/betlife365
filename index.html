@@ -20,7 +20,7 @@ h2{font-size:clamp(25px,3.2vw,40px);font-weight:600;line-height:1.08;letter-spac
 h3{font-weight:580;letter-spacing:-.02em;}
 .lead{font-size:clamp(16px,1.4vw,18.5px);line-height:1.55;color:var(--ink-dim);font-weight:400;}
 .balance{text-wrap:balance;}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:16px;font-weight:560;letter-spacing:-.01em;padding:14px 26px;border-radius:var(--btn-r);border:1px solid transparent;cursor:pointer;transition:background .25s,border-color .25s,box-shadow .25s,transform .2s;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:16px;font-weight:560;letter-spacing:-.01em;padding:14px 26px;border-radius:var(--btn-r);border:1px solid transparent;cursor:pointer;white-space:nowrap;transition:background .25s,border-color .25s,box-shadow .25s,transform .2s;}
 .btn-primary{background:linear-gradient(180deg,var(--accent-2),var(--accent));color:var(--on-accent);box-shadow:0 12px 38px -10px var(--accent-glow);}
 .btn-primary:hover{box-shadow:0 16px 48px -10px var(--accent-glow);transform:translateY(-1px);}
 .btn-line{background:rgba(255,255,255,.05);color:var(--ink);border-color:var(--hair-2);backdrop-filter:blur(6px);}
@@ -235,6 +235,18 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
 }
 .brand .wm{font-weight:800;font-size:clamp(20px,1.5vw,28px);letter-spacing:-.03em;line-height:1;}
 .brand .wmo{color:var(--accent);}
+/* ===== Mobile hero + small-screen polish (responsive QA) ===== */
+@media(max-width:600px){
+  .hero h1{white-space:normal!important;font-size:clamp(30px,8.6vw,44px)!important;line-height:1.1!important;letter-spacing:-.022em!important;max-width:18ch!important;}
+  .hero .lead{white-space:normal!important;font-size:15.5px!important;line-height:1.5!important;margin:15px auto 0!important;max-width:33ch!important;}
+  .hero-actions{margin-top:30px!important;}
+  .hero{padding-top:104px!important;}
+}
+@media(max-width:380px){
+  .brand .wm{font-size:18px;}
+  .nav .btn{padding:6px 11px;font-size:12px;}
+  .hero-actions .btn{flex:1 1 auto;}
+}
 </style></head><body><div class="tape" id="tape" aria-hidden="true"><div class="tape-track" id="tapeTrack"></div></div><header class="nav" id="nav"><div class="wrap nav-in"><a class="brand" href="#top"><span class="wm">BetLife<span class="wmo">365</span></span></a><nav class="nav-mid"><a href="#today">Today&rsquo;s desk</a><a href="#track">Track record</a><a href="#built-for">Who it&rsquo;s for</a><a href="#free-vip">Free vs VIP</a><a href="#faq">FAQ</a></nav><div style="display:flex;align-items:center;gap:10px"><a class="btn btn-primary" href="member.html">Log in</a><a class="btn btn-discord" href="https://discord.gg/sVxE2yqvBu"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg> Try Free Access</a></div></div></header><section class="hero" id="top"><div class="hero-bg"><img src="https://images.unsplash.com/photo-1696542095242-53305aaa6d9c?q=80&w=2600&auto=format&fit=crop" alt="" onerror="this.style.display='none'"></div>
 <div class="wrap"><h1 class="reveal" style="transition-delay:.05s;text-shadow:0 2px 40px rgba(0,0,0,.5);font-size:clamp(21px,5.3vw,66px);line-height:1.06;white-space:nowrap;max-width:none">Betting is simple<br><span style="color:var(--accent)">But simple betting is hard</span></h1>
 <p class="lead reveal" style="transition-delay:.12s;max-width:none;white-space:nowrap;font-size:clamp(10px,1.55vw,15px);margin:13px auto 0;text-align:center;text-shadow:0 1px 20px rgba(0,0,0,.5)">Access daily market analysis, structured positions, and a disciplined betting framework.</p>
