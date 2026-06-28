@@ -332,16 +332,16 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
  function render(list){
    if(!list||!list.length) return;
    var seen={}, uniq=[]; list.forEach(function(x){ var key=norm(x.s)+'|'+norm(x.m); if(!x.m||seen[key]) return; seen[key]=1; uniq.push(x); });
-   var g={}; uniq.forEach(function(x){ var k=norm(x.s)||'football'; (g[k]=g[k]||[]).push(x); });
-   var keys=Object.keys(g).sort(function(a,b){var ia=ORDER.indexOf(a),ib=ORDER.indexOf(b);return (ia<0?9:ia)-(ib<0?9:ib);});
-   var total=0, CAP=12;
-   var html=keys.map(function(k){
-     if(total>=CAP) return '';
-     var items=g[k].slice(0, CAP-total); if(!items.length) return ''; total+=items.length;
-     var rows=items.map(function(x){ var t=tier(parseFloat(x.o)||2); return '<div class="tpos"><span class="dot '+t[0]+'"></span><div class="tp"><div class="tm">'+esc(x.m)+'</div><div class="tl">'+t[1]+' &middot; <span class="redact">selection &amp; odds</span></div></div><span class="lk">&#128274;</span></div>'; }).join('');
-     return '<div class="tcard"><div class="tcard-head"><span class="ts">'+esc(LBL[k]||(k.charAt(0).toUpperCase()+k.slice(1)))+'</span><span class="tbadge">'+items.length+' game'+(items.length>1?'s':'')+'</span></div>'+rows+'</div>';
+   var SPEMO={football:'⚽',soccer:'⚽',tennis:'🎾',nba:'🏀',basketball:'🏀',nfl:'🏈',americanfootball:'🏈',nhl:'🏒',hockey:'🏒'};
+   var cols={core:[],value:[],opp:[]};
+   uniq.forEach(function(x){ var o=parseFloat(x.o)||2; var k=(o<1.50)?'core':(o<=2.00?'value':'opp'); cols[k].push(x); });
+   var COLS=[['core','Core'],['value','Value'],['opp','Jackpot']];
+   var html=COLS.map(function(c){
+     var items=cols[c[0]];
+     var rows=items.length?items.map(function(x){ var e=SPEMO[norm(x.s)]||'🎯'; return '<div class="tpos"><span class="dot '+c[0]+'"></span><div class="tp"><div class="tm">'+e+'  '+esc(x.m)+'</div><div class="tl"><span class="redact">selection &amp; odds</span></div></div><span class="lk">&#128274;</span></div>'; }).join('') : '<div class="tpos" style="opacity:.55"><div class="tp"><div class="tl">More added through the day</div></div></div>';
+     return '<div class="tcard"><div class="tcard-head"><span class="ts">'+c[1]+'</span><span class="tbadge">'+items.length+' game'+(items.length===1?'':'s')+'</span></div>'+rows+'</div>';
    }).join('');
-   if(html) grid.innerHTML=html;
+   grid.innerHTML=html;
  }
  try{ fetch('https://raw.githubusercontent.com/FredBull070/vip-dashboard/main/ticker.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(d){ if(d&&d.length) render(d); }).catch(function(){}); }catch(e){}
 })();
