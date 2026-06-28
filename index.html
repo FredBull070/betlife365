@@ -233,6 +233,28 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
   .hero h1{font-size:clamp(26px,5vw,92px) !important;}
   .hero .lead{font-size:clamp(13px,0.95vw,21px) !important;}
 }
+/* ===== Large desktop / 4K / ultrawide: comfortable at 100%, zoom-stable (fixed px, not vw) =====
+   Big screens were showing small body text in a narrow column, which made people zoom in;
+   zooming then crossed the 1280px boundary and shrank everything. Fixed px keeps it readable
+   and predictable across the whole zoom range. */
+@media(min-width:1700px){
+  :root{--maxw:1660px;}
+  body{font-size:21px;}
+  .lead{font-size:23px !important;}
+  h2{font-size:58px !important;}
+  .btn-lg{font-size:19px !important;}
+  .hero h1{font-size:84px !important;}
+  .hero .lead{font-size:22px !important;}
+  .nav-mid a{font-size:16px !important;}
+}
+@media(min-width:2300px){
+  :root{--maxw:1880px;}
+  body{font-size:23px;}
+  .lead{font-size:25px !important;}
+  h2{font-size:66px !important;}
+  .hero h1{font-size:98px !important;}
+  .hero .lead{font-size:24px !important;}
+}
 .brand .wm{font-weight:800;font-size:clamp(20px,1.5vw,28px);letter-spacing:-.03em;line-height:1;}
 .brand .wmo{color:var(--accent);}
 /* ===== Mobile hero + small-screen polish (responsive QA) ===== */
