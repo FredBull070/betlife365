@@ -342,4 +342,25 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
  }
  try{ fetch('https://raw.githubusercontent.com/FredBull070/vip-dashboard/main/ticker.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(d){ if(d&&d.length) render(d); }).catch(function(){}); }catch(e){}
 })();
+</script><script>
+/* Sensible zoom clamp - stops the page being zoomed so far in or out that it becomes unreadable.
+   Covers Ctrl/Cmd + scroll, trackpad pinch, and Ctrl/Cmd + (+ / -) keys.
+   Ctrl/Cmd + 0 (reset to 100%) is never blocked, so the user is never trapped.
+   A browser's own menu zoom cannot be limited by any website. */
+(function(){
+  var MIN=0.8, MAX=1.6;                       // allowed band, relative to the zoom the page loaded at
+  var base=window.devicePixelRatio||1;
+  function rel(){return (window.devicePixelRatio||1)/base;}
+  window.addEventListener('wheel',function(e){
+    if(!(e.ctrlKey||e.metaKey))return;
+    var r=rel();
+    if((e.deltaY<0 && r>=MAX)||(e.deltaY>0 && r<=MIN)) e.preventDefault();
+  },{passive:false});
+  window.addEventListener('keydown',function(e){
+    if(!(e.ctrlKey||e.metaKey))return;
+    var k=e.key, r=rel();
+    var zin=(k==='+'||k==='='), zout=(k==='-'||k==='_');
+    if((zin && r>=MAX)||(zout && r<=MIN)) e.preventDefault();
+  },{passive:false});
+})();
 </script></body></html>
