@@ -207,7 +207,7 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
 .aud-list .ic{flex:0 0 auto;margin-top:2px;}.aud-card.for .ic{color:var(--core);}.aud-card.notf .ic{color:var(--opp);}
 .aud-card.notf li{color:var(--ink-faint);}.aud-card.for li{color:var(--ink);}
 
-.tape{position:fixed;top:52px;left:0;right:0;height:34px;z-index:90;background:transparent;overflow:hidden;display:flex;align-items:center;transition:opacity .45s ease,transform .45s ease;}
+.tape{position:fixed;top:52px;left:0;right:0;height:34px;z-index:120;background:transparent;overflow:hidden;display:flex;align-items:center;transition:opacity .45s ease,transform .45s ease;}
 .tape.thide{opacity:0;transform:translateY(-14px);pointer-events:none;}
 .tape::before,.tape::after{content:"";position:absolute;top:0;bottom:0;width:48px;z-index:2;pointer-events:none;}
 .tape::before{left:0;background:none;}
@@ -341,7 +341,7 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
  function item(f){return '<span class="ti" data-base="'+f.o.toFixed(2)+'"><span class="te">'+emo(f)+'</span><span class="tm">'+esc(f.m)+'</span><span class="tk">'+esc(f.k)+'</span><span class="to">'+f.o.toFixed(2)+'</span><span class="tar">&#9650;</span></span>';}
  function render(list){if(!list||!list.length)list=DEFAULT;var one=list.map(item).join('');track.innerHTML=one+one;}
  render(DEFAULT);
- try{fetch('https://raw.githubusercontent.com/FredBull070/vip-dashboard/main/ticker.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(d){if(d&&d.length){render(d.map(function(x){return {s:x.s,e:x.e,m:x.m,k:x.k,o:parseFloat(x.o)};}));}}).catch(function(){});}catch(e){}
+ try{fetch('https://raw.githubusercontent.com/FredBull070/vip-dashboard/main/ticker.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(d){if(d&&d.length){var mapped=d.map(function(x){return {s:x.s,e:x.e,m:x.m,k:x.k,o:parseFloat(x.o)};});var have={};mapped.forEach(function(x){have[(x.s||'').toLowerCase()]=1;});DEFAULT.forEach(function(g){if(!have[(g.s||'').toLowerCase()])mapped.push(g);});render(mapped);}}).catch(function(){});}catch(e){}
  function tick(){var items=track.querySelectorAll('.ti');if(!items.length)return;for(var n=0;n<3;n++){var el=items[Math.floor(Math.random()*items.length)];var oel=el.querySelector('.to');var cur=parseFloat(oel.textContent);var base=parseFloat(el.getAttribute('data-base'));var dir=Math.random()<0.5?-1:1;var nv=+(cur+dir*(0.01+Math.random()*0.03)).toFixed(2);if(Math.abs(nv-base)>0.12||nv<1.05)nv=+(base+(Math.random()*0.06-0.03)).toFixed(2);if(nv<1.02)nv=1.02;var upd=nv>=cur;oel.textContent=nv.toFixed(2);var ar=el.querySelector('.tar');if(ar)ar.innerHTML=upd?'&#9650;':'&#9660;';el.classList.remove('up','down');void el.offsetWidth;el.classList.add(upd?'up':'down');}}
  setInterval(tick,1700);
 })();
@@ -381,7 +381,7 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
    Ctrl/Cmd + 0 (reset to 100%) is never blocked, so the user is never trapped.
    A browser's own menu zoom cannot be limited by any website. */
 (function(){
-  var MIN=0.8, MAX=1.6;                       // allowed band, relative to the zoom the page loaded at
+  var MIN=0.8, MAX=1.5;                       // allowed band, relative to the zoom the page loaded at
   var base=window.devicePixelRatio||1;
   function rel(){return (window.devicePixelRatio||1)/base;}
   window.addEventListener('wheel',function(e){
@@ -395,5 +395,15 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
     var zin=(k==='+'||k==='='), zout=(k==='-'||k==='_');
     if((zin && r>=MAX)||(zout && r<=MIN)) e.preventDefault();
   },{passive:false});
+  // Safety net: keep the EFFECTIVE zoom inside the band no matter how the user zooms
+  // (keyboard, trackpad, or the browser's own menu). Within the band this does nothing.
+  function clamp(){
+    var r=rel(), f=1;
+    if(r>MAX) f=MAX/r; else if(r<MIN) f=MIN/r;
+    var el=document.documentElement, cur=parseFloat(el.style.zoom)||1;
+    if(Math.abs(f-cur)>0.002){ el.style.zoom = (Math.abs(f-1)<0.002 ? '' : f); }
+  }
+  window.addEventListener('resize', clamp);
+  clamp();
 })();
 </script></body></html>
