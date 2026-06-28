@@ -26,13 +26,13 @@ h3{font-weight:580;letter-spacing:-.02em;}
 .btn-line{background:rgba(255,255,255,.05);color:var(--ink);border-color:var(--hair-2);backdrop-filter:blur(6px);}
 .btn-line:hover{border-color:rgba(255,255,255,.4);}
 .btn-lg{padding:17px 32px;font-size:17px;}
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .4s,border-color .4s;border-bottom:1px solid transparent;}
-.nav.scrolled{background:var(--nav-bg);backdrop-filter:saturate(150%) blur(18px);-webkit-backdrop-filter:saturate(150%) blur(18px);border-bottom-color:var(--hair);}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:linear-gradient(180deg,rgba(6,5,5,.92) 0%,rgba(6,5,5,.55) 48%,rgba(6,5,5,0) 100%);transition:backdrop-filter .4s;border-bottom:1px solid transparent;}
+.nav.scrolled{backdrop-filter:saturate(150%) blur(16px);-webkit-backdrop-filter:saturate(150%) blur(16px);}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:52px;}
 .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;letter-spacing:-.02em;}
 .brand .mark{width:30px;height:30px;border-radius:50%;object-fit:cover;display:block;}
 .brand .mark svg{width:14px;height:14px;}
-.nav-mid{display:flex;gap:28px;}.nav-mid a{font-size:14px;color:var(--accent);font-weight:700;letter-spacing:-.01em;transition:color .2s;}.nav-mid a:hover{color:var(--accent-2);}
+.nav-mid{display:flex;gap:28px;}.nav-mid a{font-size:14px;color:#fff;font-weight:600;letter-spacing:-.01em;transition:color .2s;}.nav-mid a:hover{color:var(--accent);}
 .nav .btn{padding:6px 14px;font-size:13px;font-weight:700;}
 @media(max-width:940px){.nav-mid{display:none;}}
 section{position:relative;padding:clamp(90px,13vh,150px) 0;}
