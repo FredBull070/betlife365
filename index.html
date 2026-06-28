@@ -37,7 +37,7 @@ h3{font-weight:580;letter-spacing:-.02em;}
 @media(max-width:940px){.nav-mid{display:none;}}
 section{position:relative;padding:clamp(90px,13vh,150px) 0;}
 .divider{border-top:1px solid var(--hair);}
-.sec-intro{max-width:760px;}.sec-intro .eyebrow{display:block;margin-bottom:20px;}.sec-intro h2{margin-bottom:18px;}
+.sec-intro{max-width:760px;}.sec-intro .eyebrow{display:block;margin-bottom:20px;}.sec-intro h2{margin-bottom:18px;white-space:nowrap;}
 .center{text-align:center;margin-left:auto;margin-right:auto;}
 .sports{padding:28px 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);background:var(--surface-2);}
 .sports-in{display:flex;align-items:center;justify-content:center;gap:clamp(18px,4.5vw,48px);flex-wrap:wrap;}
@@ -263,6 +263,7 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
   .hero .lead{white-space:normal!important;font-size:15.5px!important;line-height:1.5!important;margin:15px auto 0!important;max-width:33ch!important;}
   .hero-actions{margin-top:30px!important;}
   .hero{padding-top:104px!important;}
+  .sec-intro h2{white-space:normal!important;}
 }
 @media(max-width:380px){
   .brand .wm{font-size:18px;}
@@ -332,12 +333,18 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
  function render(list){
    if(!list||!list.length) return;
    var seen={}, uniq=[]; list.forEach(function(x){ var key=norm(x.s)+'|'+norm(x.m); if(!x.m||seen[key]) return; seen[key]=1; uniq.push(x); });
+   uniq.sort(function(a,b){ return (parseFloat(a.o)||9)-(parseFloat(b.o)||9); });
+   var n=uniq.length, dt=new Date(), seed=dt.getFullYear()*10000+(dt.getMonth()+1)*100+dt.getDate();
+   function rnd(s){ var x=Math.sin(seed*0.911+s*131.7)*43758.5453; return x-Math.floor(x); }
+   var t=[2+Math.floor(rnd(1)*4), 2+Math.floor(rnd(2)*4), 2+Math.floor(rnd(3)*4)], sum=t[0]+t[1]+t[2], guard=0;
+   while(sum>n && guard++<60){ var mi=0; if(t[1]>t[mi])mi=1; if(t[2]>t[mi])mi=2; t[mi]--; sum--; }
+   guard=0;
+   while(sum<n && guard++<60){ var mj=-1,mn=99,j; for(j=0;j<3;j++){ if(t[j]<5 && t[j]<mn){ mn=t[j]; mj=j; } } if(mj<0) break; t[mj]++; sum++; }
+   for(var z=0;z<3;z++){ if(t[z]<0) t[z]=0; }
    var SPEMO={football:'⚽',soccer:'⚽',tennis:'🎾',nba:'🏀',basketball:'🏀',nfl:'🏈',americanfootball:'🏈',nhl:'🏒',hockey:'🏒'};
-   var cols={core:[],value:[],opp:[]};
-   uniq.forEach(function(x){ var o=parseFloat(x.o)||2; var k=(o<1.50)?'core':(o<=2.00?'value':'opp'); cols[k].push(x); });
-   var COLS=[['core','Core'],['value','Value'],['opp','Jackpot']];
+   var COLS=[['core','Core',uniq.slice(0,t[0])],['value','Value',uniq.slice(t[0],t[0]+t[1])],['opp','Jackpot',uniq.slice(t[0]+t[1],t[0]+t[1]+t[2])]];
    var html=COLS.map(function(c){
-     var items=cols[c[0]];
+     var items=c[2];
      var rows=items.length?items.map(function(x){ var e=SPEMO[norm(x.s)]||'🎯'; return '<div class="tpos"><span class="dot '+c[0]+'"></span><div class="tp"><div class="tm">'+e+'  '+esc(x.m)+'</div><div class="tl"><span class="redact">selection &amp; odds</span></div></div><span class="lk">&#128274;</span></div>'; }).join('') : '<div class="tpos" style="opacity:.55"><div class="tp"><div class="tl">More added through the day</div></div></div>';
      return '<div class="tcard"><div class="tcard-head"><span class="ts">'+c[1]+'</span><span class="tbadge">'+items.length+' game'+(items.length===1?'':'s')+'</span></div>'+rows+'</div>';
    }).join('');
