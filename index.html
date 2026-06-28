@@ -407,4 +407,55 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
   window.addEventListener('resize', clamp);
   clamp();
 })();
+</script>
+<script>
+/* BetLife365 analytics - Cloudflare Web Analytics (cookieless) + CTA conversion tracking.
+   Conversions are sent as virtual pageviews (/goal/...) which Cloudflare records through its
+   SPA pushState tracking, so they show up in the same free dashboard. No cookies, no banner. */
+(function(){
+  /* 1) Cloudflare Web Analytics beacon - only loads once a real token has been set. */
+  var T="__CF_TOKEN__";
+  if(T && T.indexOf("__CF")!==0){
+    var s=document.createElement('script');
+    s.defer=true; s.src='https://static.cloudflareinsights.com/beacon.min.js';
+    s.setAttribute('data-cf-beacon','{"token":"'+T+'","spa":true}');
+    document.head.appendChild(s);
+  }
+  /* 2) Push an event to the data layer (harmless, no URL/history change). */
+  function ev(goal){ if(!goal) return; (window.dataLayer=window.dataLayer||[]).push({event:'cta',goal:goal,t:Date.now()}); }
+  /* 3) Virtual pageview for navigate-away conversions - Cloudflare logs /goal/<name>. */
+  function pv(goal){
+    if(!goal) return;
+    try{
+      var real=location.pathname+location.search+location.hash;
+      history.pushState(history.state,'', '/goal/'+goal);   // recorded by Cloudflare's pushState hook
+      history.replaceState(history.state,'', real);          // silently restore the real URL
+    }catch(e){}
+    ev(goal);
+  }
+  window.blTrack=pv;
+  /* 4) Map a clicked link/button to a clean goal name. */
+  function goalFor(el){
+    var explicit=el.getAttribute('data-goal'); if(explicit) return explicit;
+    var txt=(el.textContent||'').trim().toLowerCase();
+    var href=(el.getAttribute('href')||'').toLowerCase();
+    if(/get\s*vip|vip access/.test(txt)) return 'get-vip';
+    if(/free access/.test(txt)) return 'free-access';
+    if(/log\s*in|sign\s*in|dashboard/.test(txt)) return 'login';
+    if(/discord\.gg|discord\.com/.test(href)) return 'join-discord';
+    return null;
+  }
+  document.addEventListener('click', function(e){
+    if(!e.target.closest) return;
+    var el=e.target.closest('a,button,.btn');
+    if(!el || el.tagName==='SUMMARY') return;
+    pv(goalFor(el));
+  }, true);
+  /* 5) FAQ opens - data layer only (no history change, keeps the back button clean). */
+  function wireFaq(){
+    var qs=document.querySelectorAll('details.qa');
+    for(var i=0;i<qs.length;i++){ (function(d){ d.addEventListener('toggle', function(){ if(d.open) ev('faq-open'); }); })(qs[i]); }
+  }
+  if(document.readyState!=='loading') wireFaq(); else document.addEventListener('DOMContentLoaded', wireFaq);
+})();
 </script></body></html>
