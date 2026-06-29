@@ -67,7 +67,11 @@
       '#bl-ctrls button{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);color:#c9cdd6;font:600 12px/1 inherit;padding:8px 13px;border-radius:999px;cursor:pointer;transition:.15s}',
       '#bl-ctrls button:hover{border-color:rgba(255,255,255,.25)}',
       '#bl-ctrls button.on{background:var(--accent,#f0782a);border-color:var(--accent,#f0782a);color:#1a1206}',
-      '#bl-total{font-size:12.5px;color:#9aa0ab;margin-top:6px}#bl-total b{color:#e9eaee}'
+      '#bl-total{font-size:12.5px;color:#9aa0ab;margin-top:6px}#bl-total b{color:#e9eaee}',
+      '.trk-badges{justify-content:center !important}',
+      '.bl-live-badge{background:rgba(53,198,107,.12)!important;border-color:rgba(53,198,107,.5)!important;color:#35c66b!important}',
+      '.bl-live-badge .lv{background:#35c66b!important;border-radius:50%;animation:blBreathe 2.2s ease-in-out infinite}',
+      '@keyframes blBreathe{0%,100%{box-shadow:0 0 0 0 rgba(53,198,107,.55)}50%{box-shadow:0 0 0 7px rgba(53,198,107,0)}}'
     ].join('');
     document.head.appendChild(s);
   }
@@ -76,19 +80,20 @@
     return '<div class="row">'+btns(TYPES,'type')+'</div><div class="row">'+btns(PERIODS,'period')+'</div>';
   }
   function ensureControls(sec){
-    var panel=sec.querySelector('.panel'); if(!panel) return;
-    var c=document.getElementById('bl-ctrls');
-    if(!c){ c=document.createElement('div'); c.id='bl-ctrls'; c.innerHTML=ctrlsHTML();
-      panel.parentNode.insertBefore(c, panel);
-      c.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b)return;
-        if(b.getAttribute('data-type')){ state.type=b.getAttribute('data-type'); }
-        else if(b.getAttribute('data-period')){ state.period=b.getAttribute('data-period'); }
-        render();
-      });
-    }
-    // total badge under the big label
+    // Controls hidden for now: the public site stays fixed on the approved slice.
+    var ex=document.getElementById('bl-ctrls'); if(ex) ex.remove();
+    // total badge under the big label (honest all-time total stays)
     var lbl=sec.querySelector('.biglbl');
     if(lbl && !document.getElementById('bl-total')){ var t=document.createElement('div'); t.id='bl-total'; lbl.parentNode.insertBefore(t, lbl.nextSibling); }
+    restyleBadges(sec);
+  }
+  function restyleBadges(sec){
+    var wrap=sec.querySelector('.trk-badges'); if(!wrap) return;
+    [].slice.call(wrap.querySelectorAll('.trk-badge')).forEach(function(b){
+      var t=(b.textContent||'').toLowerCase();
+      if(t.indexOf('updated daily')>=0){ b.classList.add('bl-live-badge'); b.style.display=''; }
+      else { b.style.display='none'; }
+    });
   }
   function updateActive(){
     var c=document.getElementById('bl-ctrls'); if(!c)return;
