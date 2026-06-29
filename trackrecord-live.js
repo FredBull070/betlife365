@@ -97,10 +97,38 @@
       b.classList.toggle('on',on);
     });
   }
+  function panel(re){ var sec=document.getElementById('track'); if(!sec)return null; return [].slice.call(sec.querySelectorAll('.tbox')).filter(function(b){return re.test(b.textContent||'');})[0]||null; }
+  function renderSports(list){
+    var box=panel(/Profit by sport/i); if(!box)return;
+    var by={}; list.filter(function(r){return r.result==='W'||r.result==='L';}).forEach(function(r){ var sp=r.sport||'Other'; by[sp]=(by[sp]||0)+(r.result==='W'?num(r.stake)*(num(r.odds)-1):-num(r.stake)); });
+    var arr=Object.keys(by).map(function(k){return [k,by[k]];}).sort(function(a,b){return b[1]-a[1];});
+    var max=1; arr.forEach(function(x){max=Math.max(max,Math.abs(x[1]));});
+    var rows=[].slice.call(box.querySelectorAll('.sportbar'));
+    rows.forEach(function(row,i){
+      if(i<arr.length){ row.style.display=''; var sn=row.querySelector('.sn'),sv=row.querySelector('.sv'),fill=row.querySelector('.st i')||row.querySelector('.st > *');
+        if(sn)sn.textContent=arr[i][0]; if(sv){sv.textContent=u(arr[i][1]); sv.style.color=arr[i][1]>=0?'':'#ff6a4d';}
+        if(fill){ fill.style.width=Math.max(5,Math.round(Math.abs(arr[i][1])/max*100))+'%'; if(arr[i][1]<0) fill.style.background='#ff5a5a'; }
+      } else { row.style.display='none'; }
+    });
+  }
+  function renderRecent(list){
+    var box=panel(/Recent results/i); if(!box)return;
+    var dec=list.filter(function(r){return r.result==='W'||r.result==='L';}).sort(function(a,b){var da=ep(a.date),db=ep(b.date);return db-da||(b.id||0)-(a.id||0);});
+    var rows=[].slice.call(box.querySelectorAll('.fr2'));
+    rows.forEach(function(row,i){
+      if(i<dec.length){ var r=dec[i]; row.style.display=''; row.className='fr2 '+(r.result==='W'?'w':'l');
+        var fm=row.querySelector('.fm'),fr=row.querySelector('.fr'),fu=row.querySelector('.fu');
+        if(fm)fm.textContent=(r.match||r.selection||'').replace(/\*\*/g,'').replace(/[\u{1F300}-\u{1FAFF}]/gu,'').trim();
+        if(fr)fr.textContent=r.result;
+        if(fu)fu.textContent=u(r.result==='W'?num(r.stake)*(num(r.odds)-1):-num(r.stake));
+      } else { row.style.display='none'; }
+    });
+  }
   function render(){
     var sec=document.getElementById('track'); if(!sec)return;
     injectStyle(); ensureControls(sec);
-    var s=stats(slice(state.type,state.period));
+    var list=slice(state.type,state.period);
+    var s=stats(list);
     var tot=stats(slice('all','all'));
     var big=sec.querySelector('.big'); if(big){ big.textContent=u(s.profit); big.setAttribute('data-count',(Math.round(s.profit*10)/10).toFixed(1)); big.classList.remove('up','down'); big.classList.add(s.profit>=0?'up':'down'); }
     var ptr=sec.querySelector('.pt-r'); if(ptr) ptr.textContent=TLAB[state.type]+' · '+PLAB[state.period];
@@ -123,6 +151,7 @@
       for(var i=0;i<sp.length;i++){ if(ds.length>=2 && sp.length>1){ var idx=Math.round(i*(ds.length-1)/(sp.length-1)); sp[i].textContent=fmtD(ds[idx]); } else { sp[i].textContent=''; } }
     }
     var tb=document.getElementById('bl-total'); if(tb) tb.innerHTML='Featured slice. <b>All-time total: '+u(tot.profit)+'</b> · '+pct(tot.roi)+' over '+tot.bets+' settled bets.';
+    renderSports(list); renderRecent(list);
     updateActive();
   }
 
