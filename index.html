@@ -367,7 +367,7 @@ footer{border-top:1px solid var(--hair);padding:44px 0;}
    while(sum<n && guard++<60){ var mj=-1,mn=99,j; for(j=0;j<3;j++){ if(t[j]<5 && t[j]<mn){ mn=t[j]; mj=j; } } if(mj<0) break; t[mj]++; sum++; }
    for(var z=0;z<3;z++){ if(t[z]<0) t[z]=0; }
    var SPEMO={football:'⚽',soccer:'⚽',tennis:'🎾',nba:'🏀',basketball:'🏀',nfl:'🏈',americanfootball:'🏈',nhl:'🏒',hockey:'🏒'};
-   var COLS=[['core','Core Builder',uniq.slice(0,t[0])],['value','Value Builder',uniq.slice(t[0],t[0]+t[1])],['opp','Jackpot Builder',uniq.slice(t[0]+t[1],t[0]+t[1]+t[2])]];
+   var COLS=[['core','Safe Builder',uniq.slice(0,t[0])],['value','Value Builder',uniq.slice(t[0],t[0]+t[1])],['opp','Jackpot Builder',uniq.slice(t[0]+t[1],t[0]+t[1]+t[2])]];
    var html=COLS.map(function(c){
      var items=c[2];
      var rows=items.length?items.map(function(x){ var e=SPEMO[norm(x.s)]||'🎯'; return '<div class="tpos"><span class="dot '+c[0]+'"></span><div class="tp"><div class="tm">'+e+'  '+esc(x.m)+'</div><div class="tl"><span class="redact">selection &amp; odds</span></div></div><span class="lk">&#128274;</span></div>'; }).join('') : '<div class="tpos" style="opacity:.55"><div class="tp"><div class="tl">More added through the day</div></div></div>';
