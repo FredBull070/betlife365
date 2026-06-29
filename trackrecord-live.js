@@ -26,35 +26,56 @@
       .filter(function(r){ return inPeriod(r,per); });
   }
   function stats(list){
-    var staked=0,profit=0,w=0,l=0,oddsum=0,decided=0,peak=0,dd=0,series=[],dates=[];
+    var staked=0,profit=0,w=0,l=0,oddsum=0,decided=0,peak=0,dd=0,series=[],dates=[],items=[];
     list.filter(function(r){return r.result==='W'||r.result==='L';})
       .sort(function(a,b){var da=ep(a.date),db=ep(b.date);return da-db||(a.id||0)-(b.id||0);})
       .forEach(function(r){
         var s=num(r.stake),o=num(r.odds); staked+=s; oddsum+=o; decided++;
-        if(r.result==='W'){profit+=s*(o-1);w++;} else {profit-=s;l++;}
+        var pl=r.result==='W'? s*(o-1):-s;
+        if(r.result==='W'){profit+=pl;w++;} else {profit-=s;l++;}
         peak=Math.max(peak,profit); dd=Math.min(dd,profit-peak); series.push(profit); dates.push(ep(r.date));
+        items.push({date:ep(r.date), pl:pl, result:r.result, match:(r.match||r.selection||'').replace(/\*\*/g,'').replace(/[\u{1F300}-\u{1FAFF}]/gu,'').trim()});
       });
     var n=w+l;
-    return {profit:profit, roi:staked?100*profit/staked:0, strike:n?100*w/n:0, avg:decided?oddsum/decided:0, bets:n, dd:dd, series:series, dates:dates};
+    return {profit:profit, roi:staked?100*profit/staked:0, strike:n?100*w/n:0, avg:decided?oddsum/decided:0, bets:n, dd:dd, series:series, dates:dates, items:items};
   }
   var MND=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   function fmtD(e){ var d=new Date(e); return d.getDate()+' '+MND[d.getMonth()]; }
   function u(x){return (x>=0?'+':'')+(Math.round(x*10)/10).toFixed(1)+'u';}
   function pct(x){return (x>=0?'+':'')+(Math.round(x*10)/10).toFixed(1)+'%';}
 
-  function chart(svg, series){
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function bars(svg, items){
     if(!svg) return;
-    var W=560,H=240,pad=8;
-    var paths=svg.querySelectorAll('path'), circ=svg.querySelector('circle');
-    if(series.length<2){ if(paths[0])paths[0].setAttribute('d',''); if(paths[1])paths[1].setAttribute('d',''); if(circ)circ.setAttribute('r','0'); return; }
-    var mn=Math.min.apply(null,series), mx=Math.max.apply(null,series), rng=(mx-mn)||1;
-    function X(i){return pad+(W-2*pad)*i/(series.length-1);}
-    function Y(v){return pad+(H-2*pad)*(1-(v-mn)/rng);}
-    var d=series.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);}).join(' ');
-    var area=d+' L'+X(series.length-1).toFixed(1)+' '+(H-pad)+' L'+X(0).toFixed(1)+' '+(H-pad)+' Z';
-    if(paths[0])paths[0].setAttribute('d',area);
-    if(paths[1])paths[1].setAttribute('d',d);
-    if(circ){ circ.setAttribute('cx',X(series.length-1).toFixed(1)); circ.setAttribute('cy',Y(series[series.length-1]).toFixed(1)); circ.setAttribute('r','4'); }
+    var host=svg.parentNode; if(host) host.style.position='relative';
+    var tip=host && host.querySelector('.bl-tip');
+    if(host && !tip){ tip=document.createElement('div'); tip.className='bl-tip';
+      tip.style.cssText='position:absolute;pointer-events:none;opacity:0;transition:opacity .12s ease;background:#0e0f13;border:1px solid #2a2e37;border-radius:8px;padding:7px 11px;font:500 12px/1.35 system-ui,-apple-system,sans-serif;color:#e9eaee;z-index:6;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.45)';
+      host.appendChild(tip);
+    }
+    var W=560,H=240,pad=14,mid=H/2;
+    if(!items || !items.length){ svg.innerHTML=''; return; }
+    var mx=Math.max.apply(null, items.map(function(it){return Math.abs(it.pl);}))||1;
+    var n=items.length, slot=(W-2*pad)/n, bw=Math.min(30, Math.max(5, slot*0.6));
+    var r='';
+    items.forEach(function(it,i){
+      var cx=pad+slot*(i+0.5);
+      var bh=Math.max(8, Math.abs(it.pl)/mx*(H/2-pad-6));
+      var y=it.pl>=0? mid-bh: mid;
+      r+='<rect data-i="'+i+'" x="'+(cx-bw/2).toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+bh.toFixed(1)+'" rx="2.5" fill="'+(it.pl>=0?'#35c66b':'#f0782a')+'"/>';
+    });
+    svg.innerHTML='<line x1="'+pad+'" y1="'+mid+'" x2="'+(W-pad)+'" y2="'+mid+'" stroke="#262a31" stroke-width="1"/>'+r;
+    svg.onmousemove=function(e){
+      var t=e.target; if(!tip || !t || t.tagName!=='rect'){ if(tip)tip.style.opacity='0'; return; }
+      var it=items[+t.getAttribute('data-i')]; if(!it) return;
+      var rb=t.getBoundingClientRect(), hb=host.getBoundingClientRect(), col=it.pl>=0?'#35c66b':'#f0782a';
+      tip.innerHTML='<span style="color:#9aa0ab">'+fmtD(it.date)+'</span> &nbsp;<b style="color:'+col+'">'+u(it.pl)+'</b>'+(it.match?'<div style="color:#9aa0ab;font-size:11px;margin-top:3px;max-width:230px;overflow:hidden;text-overflow:ellipsis">'+esc(it.match)+'</div>':'');
+      tip.style.left=(rb.left-hb.left+rb.width/2)+'px';
+      if(it.pl>=0){ tip.style.top=(rb.top-hb.top)+'px'; tip.style.transform='translate(-50%,-112%)'; }
+      else { tip.style.top=(rb.bottom-hb.top)+'px'; tip.style.transform='translate(-50%,12%)'; }
+      tip.style.opacity='1';
+    };
+    svg.onmouseleave=function(){ if(tip)tip.style.opacity='0'; };
   }
   function setV(el,txt,sign){ if(!el)return; el.textContent=txt; if(sign!=null){ el.classList.remove('up','down'); el.classList.add(sign>=0?'up':'down'); } }
 
@@ -150,8 +171,8 @@
     if(kc[3]) kc[3].textContent=String(s.bets);
     if(kc[4]) kc[4].textContent=s.avg.toFixed(2);
     setV(kc[5],u(s.dd),s.dd);
-    chart(sec.querySelector('svg'), s.series);
-    var cap=sec.querySelector('.cap'); if(cap) cap.textContent='Cumulative units · every position logged, nothing removed.';
+    bars(sec.querySelector('svg'), s.items);
+    var cap=sec.querySelector('.cap'); if(cap) cap.textContent='Profit/loss per bet, in units · green won, orange lost · hover for details.';
     var axis=sec.querySelector('.axis');
     if(axis){ var sp=axis.querySelectorAll('span'), ds=s.dates||[];
       for(var i=0;i<sp.length;i++){ if(ds.length>=2 && sp.length>1){ var idx=Math.round(i*(ds.length-1)/(sp.length-1)); sp[i].textContent=fmtD(ds[idx]); } else { sp[i].textContent=''; } }
