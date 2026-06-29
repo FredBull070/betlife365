@@ -111,8 +111,8 @@
     var rows=[].slice.call(box.querySelectorAll('.sportbar'));
     rows.forEach(function(row,i){
       if(i<arr.length){ row.style.display=''; var sn=row.querySelector('.sn'),sv=row.querySelector('.sv'),fill=row.querySelector('.st i')||row.querySelector('.st > *');
-        if(sn)sn.textContent=arr[i][0]; if(sv){sv.textContent=u(arr[i][1]); sv.style.color=arr[i][1]>=0?'':'#ff6a4d';}
-        if(fill){ fill.style.width=Math.max(5,Math.round(Math.abs(arr[i][1])/max*100))+'%'; if(arr[i][1]<0) fill.style.background='#ff5a5a'; }
+        if(sn)sn.textContent=arr[i][0]; if(sv){sv.textContent=u(arr[i][1]); sv.style.color=arr[i][1]>=0?'#35c66b':'#f0782a';}
+        if(fill){ fill.style.width=Math.max(5,Math.round(Math.abs(arr[i][1])/max*100))+'%'; fill.style.background='var(--accent,#f0782a)'; }
       } else { row.style.display='none'; }
     });
   }
