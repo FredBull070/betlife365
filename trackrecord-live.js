@@ -82,9 +82,7 @@
   function ensureControls(sec){
     // Controls hidden for now: the public site stays fixed on the approved slice.
     var ex=document.getElementById('bl-ctrls'); if(ex) ex.remove();
-    // total badge under the big label (honest all-time total stays)
-    var lbl=sec.querySelector('.biglbl');
-    if(lbl && !document.getElementById('bl-total')){ var t=document.createElement('div'); t.id='bl-total'; lbl.parentNode.insertBefore(t, lbl.nextSibling); }
+    var bt=document.getElementById('bl-total'); if(bt) bt.remove();
     restyleBadges(sec);
   }
   function restyleBadges(sec){
@@ -135,7 +133,10 @@
     var list=slice(state.type,state.period);
     var s=stats(list);
     var tot=stats(slice('all','all'));
-    var big=sec.querySelector('.big'); if(big){ big.textContent=u(s.profit); big.setAttribute('data-count',(Math.round(s.profit*10)/10).toFixed(1)); big.classList.remove('up','down'); big.classList.add(s.profit>=0?'up':'down'); }
+    var bigVal=u(s.profit), bigCol=s.profit>=0?'#35c66b':'#f0782a';
+    var big=sec.querySelector('.big'); if(big){ big.textContent=bigVal; big.setAttribute('data-count',(Math.round(s.profit*10)/10).toFixed(1)); big.style.setProperty('color', bigCol, 'important'); }
+    // re-assert after any count-up animation so it never settles on a stale value
+    [700,1600,2900].forEach(function(ms){ setTimeout(function(){ var b=document.querySelector('#track .big'); if(b){ b.textContent=bigVal; b.style.setProperty('color', bigCol, 'important'); } }, ms); });
     var ptr=sec.querySelector('.pt-r'); if(ptr) ptr.textContent=TLAB[state.type]+' · '+PLAB[state.period];
     var mk=sec.querySelectorAll('.mini-kpis .mk .v');
     if(mk[0]) mk[0].textContent=pct(s.roi);
@@ -155,7 +156,6 @@
     if(axis){ var sp=axis.querySelectorAll('span'), ds=s.dates||[];
       for(var i=0;i<sp.length;i++){ if(ds.length>=2 && sp.length>1){ var idx=Math.round(i*(ds.length-1)/(sp.length-1)); sp[i].textContent=fmtD(ds[idx]); } else { sp[i].textContent=''; } }
     }
-    var tb=document.getElementById('bl-total'); if(tb) tb.innerHTML='Featured slice. <b>All-time total: '+u(tot.profit)+'</b> · '+pct(tot.roi)+' over '+tot.bets+' settled bets.';
     renderSports(list); renderRecent(list);
     updateActive();
   }
